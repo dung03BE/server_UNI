@@ -9,10 +9,10 @@ import com.dung.UniStore.exception.ErrorCode;
 import com.dung.UniStore.mapper.OrderDetailMapper;
 import com.dung.UniStore.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+//import org.redisson.api.RLock;
+//import org.redisson.api.RedissonClient;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,13 +28,13 @@ public class OrderDetailService implements IOrderDetailService{
     private final IOrderRepository orderRepository;
     private final IProductRepository productRepository;
     private final OrderDetailMapper orderDetailMapper;
-    private final RedisTemplate<String,Object> redisTemplate;
+//    private final RedisTemplate<String,Object> redisTemplate;
 //    private final InventoryRepository inventoryRepository;
     private final ICartItemRepository cartItemRepository;
     private final IInventoryRepository iinventoryRepository;
     private final IProductColorRepo productColorRepo;
-    @Autowired
-    private RedissonClient redissonClient;
+//    @Autowired
+//    private RedissonClient redissonClient;
 
     @Override
     public BigDecimal createOrderDetails(int orderId, Long cartId) throws ApiException {
