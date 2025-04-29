@@ -9,8 +9,8 @@ public class WebConfig  implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:D:/BE/SpringFW/Web unistore/BE/UniStore/uploads/");
-//                .addResourceLocations("classpath:/uploads/");
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");
+
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
