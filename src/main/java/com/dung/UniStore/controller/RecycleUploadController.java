@@ -1,6 +1,8 @@
 package com.dung.UniStore.controller;
 
 
+import com.cloudinary.Cloudinary;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/upload")
+@RequiredArgsConstructor
 public class RecycleUploadController {
 
     @Value("${upload.directory}")
     private String uploadDirectory;
+    private final Cloudinary cloudinary;
 
     @PostMapping
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -33,10 +37,7 @@ public class RecycleUploadController {
             }
 
             // Lưu file
-            String filename = storeFile(file);
-
-            // Tạo URL truy cập file
-            String fileUrl =  filename;
+            String fileUrl = uploadToCloudinary(file);
 
             return ResponseEntity.ok(Map.of("url", fileUrl));
         } catch (IOException e) {
@@ -59,7 +60,10 @@ public class RecycleUploadController {
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         return uniqueFilename;
     }
-
+    private String uploadToCloudinary(MultipartFile file) throws IOException {
+        Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
+        return uploadResult.get("secure_url").toString(); // Trả về link ảnh
+    }
     private boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
         return contentType != null && contentType.startsWith("image/");

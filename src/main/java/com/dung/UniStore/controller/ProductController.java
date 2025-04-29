@@ -1,4 +1,5 @@
 package com.dung.UniStore.controller;
+import com.cloudinary.Cloudinary;
 import com.dung.UniStore.dto.request.ProductCreationRequest;
 import com.dung.UniStore.dto.request.ProductUpdateRequest;
 import com.dung.UniStore.dto.response.*;
@@ -28,10 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -43,6 +41,7 @@ public class ProductController {
 
     private final  ModelMapper modelMapper;
     private final ProductMapper productMapper;
+    private final Cloudinary cloudinary;
 
     @PostMapping()
     public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody ProductCreationRequest request)
@@ -88,12 +87,14 @@ public class ProductController {
                             .build();
                 }
                 //luu file và update thumbnail
-                String filename = storeFile(file);
+//                String filename = storeFile(file);
+                String imageUrl =uploadToCloudinary(file);
                 //luu vao productimage
                 ProductImage productImage = productService.createProductImage(
                         existingProduct.getId(),
                         ProductImageResponse.builder()
-                                .imageUrl(filename)
+//                                .imageUrl(filename)
+                                .imageUrl(imageUrl)
                                 .build()
                 );
                 productImages.add(productImage);
@@ -129,6 +130,10 @@ public class ProductController {
         Path destination = Paths.get(upLoadDir.toString(),uniqueFilename);
         Files.copy(file.getInputStream(),destination, StandardCopyOption.REPLACE_EXISTING);
         return uniqueFilename;
+    }
+    private String uploadToCloudinary(MultipartFile file) throws IOException {
+        Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
+        return uploadResult.get("secure_url").toString(); // Trả về link ảnh
     }
     private boolean isImageFile(MultipartFile file)
     {
