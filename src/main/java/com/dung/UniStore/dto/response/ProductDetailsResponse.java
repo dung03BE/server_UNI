@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDetailsResponse {
+public class ProductDetailsResponse  {
     private String screen_size;
     private String resolution;
     private String processor;

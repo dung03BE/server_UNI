@@ -3,13 +3,14 @@ package com.dung.UniStore.dto.response;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductResponse {
+public class ProductResponse  {
     private int id;
     private String name;
     private float price;

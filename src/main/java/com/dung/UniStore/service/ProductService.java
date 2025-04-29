@@ -44,6 +44,8 @@ public class ProductService implements IProductService {
 //    final InventoryRepository inventoryRepository;
     final IProductColorRepo productColorRepo;
     @Override
+    @Cacheable(value = "products", key = "'products:' + #pageable.pageNumber + ':' + #pageable.pageSize + ':' + #form.toString()")
+
     public Page<ProductResponse> getAllProducts(Pageable pageable, ProductFilterForm form) {
         Specification<Product> where = ProductSpecification.builtWhere(form);
 
