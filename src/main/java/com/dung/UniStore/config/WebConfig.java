@@ -15,7 +15,8 @@ public class WebConfig  implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://fe-unistore.onrender.com")  // Thêm origin của frontend vào đây
+                .allowedOrigins( "https://fe-unistore.onrender.com",
+                        "http://localhost:3001")  // Thêm origin của frontend vào đây
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)  // Cho phép gửi credentials
                 .allowedHeaders("*");
