@@ -7,6 +7,7 @@ import com.dung.UniStore.entity.ProductImage;
 import com.dung.UniStore.form.ProductFilterForm;
 import com.dung.UniStore.mapper.ProductMapper;
 import com.dung.UniStore.service.IProductService;
+import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -190,6 +192,23 @@ public class ProductController {
         return ApiResponse.<List<ProductResponse>>builder()
                 .result(productService.getProductsByIds(ids))
                 .build();
+    }
+
+    @GetMapping("/uploads/{filename:.+}")
+    public ResponseEntity<?> getImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get("uploads").resolve(filename).normalize();
+            if (!Files.exists(filePath)) {
+                return ResponseEntity.notFound().build();
+            }
+            byte[] imageBytes = Files.readAllBytes(filePath);
+            String contentType = Files.probeContentType(filePath);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType != null ? contentType : "application/octet-stream"))
+                    .body(imageBytes);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Không thể đọc ảnh: " + filename);
+        }
     }
 
 }
