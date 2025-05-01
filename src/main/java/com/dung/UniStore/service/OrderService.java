@@ -189,6 +189,7 @@ public class OrderService implements IOrderService {
         Order order = orderMapper.toOrder(request);
         order.setUser(existingUser);
         order.setOrderDate(new Date()); // Time now
+        System.out.println("Current date: " + new Date());
         order.setStatus(Status.pending);
 
         LocalDate shippingDate = request.getShippingDate() == null ? LocalDate.now() : request.getShippingDate();
@@ -216,7 +217,7 @@ public class OrderService implements IOrderService {
         }
         // Kiểm tra thời gian thanh toán và trạng thái thanh toán
         String baseUrl = httpRequest.getScheme() + "://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
-        String paymentUrl = vnPayService.createOrder(totalAmount.intValue(), String.valueOf(order.getId()), baseUrl);
+        String paymentUrl = vnPayService.createOrder(totalAmount.intValue(), String.valueOf(order.getId()), baseUrl,httpRequest);
 
         // Trả về URL thanh toán để frontend redirect
         return paymentUrl;
