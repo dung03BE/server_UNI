@@ -30,7 +30,7 @@ public class Product extends BaseEntity {
 //    @Column(length = 350)
 //    private String thumbnail ;
     private String description;
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference("product-image")  //Cho phía "cha" trong mối quan hệ (sẽ được serialize)
     private List<ProductImage> images; // Đổi tên thành 'images' cho rõ ràng hơn
     @ManyToOne
@@ -44,7 +44,7 @@ public class Product extends BaseEntity {
     private Double discount;
     @Column(name= "speacial_price")
     private Double specialPrice;
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductColor> colors;
     private String brand;
     private String model;
