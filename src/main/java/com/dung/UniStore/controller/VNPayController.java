@@ -54,7 +54,7 @@ public class VNPayController {
         int paymentStatus = vnPayService.orderReturn(request);
         String responseCode = request.getParameter("vnp_ResponseCode");
         String orderInfo = request.getParameter("vnp_OrderInfo");
-        String redirectUrl = "http://localhost:3001/payment-result";
+        String redirectUrl = "https://fe-unistore.onrender.com/payment-result";
         try {
             Long orderId = Long.parseLong(orderInfo);
             Optional<Order> orderOpt = orderRepository.findById(Math.toIntExact(orderId));

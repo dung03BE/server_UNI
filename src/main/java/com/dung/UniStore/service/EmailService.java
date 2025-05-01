@@ -71,7 +71,7 @@ public class EmailService {
         message.setTo(to);
         message.setSubject("🎉 Bạn nhận được phiếu giảm giá!");
         message.setText("Xin chào, bạn đã nhận được phiếu giảm giá 15%! Mã của bạn: " + couponCode);
-        message.setText("Hãy truy cập website http://localhost:3001/ để nhận sử dụng ưu đãi này!");
+        message.setText("Hãy truy cập website https://fe-unistore.onrender.com để nhận sử dụng ưu đãi này!");
         javaMailSender.send(message);
     }
     public void sendResetPasswordEmail(String to, String resetLink) {

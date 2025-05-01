@@ -50,7 +50,7 @@ public class ProductController {
                 .result(productService.createProduct(request))
                 .build();
     }
-    @CrossOrigin(origins = "http://localhost:3001")
+    @CrossOrigin(origins = "https://fe-unistore.onrender.com")
     @PostMapping(value = "uploads/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<List<ProductImage>> uploadImages(@PathVariable int id,@ModelAttribute("files")  List<MultipartFile> files)

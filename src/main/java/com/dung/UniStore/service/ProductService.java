@@ -159,14 +159,21 @@ public class ProductService implements IProductService {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
     @Override
     @CacheEvict(value = "products", key = "#id")
+    @Transactional
     public void deleteProduct(int id) {
         Product existingProduct = productRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
         );
+        existingProduct.getImages().clear();
+        existingProduct.getColors().clear();
+        existingProduct.getProducts().clear();
+        productDetailsRepository.deleteByProductId(id);
+        productRepository.save(existingProduct);
         productRepository.delete(existingProduct);
+
     }
 
     @Override

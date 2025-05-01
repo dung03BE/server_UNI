@@ -218,7 +218,7 @@ public class UserService {
     }
 
     public boolean verifyCaptcha(String token) {
-        String secret = "6LfsghIrAAAAAKJ24wOyXEyS2hkLknLzCuSn_x0N";
+        String secret = "6LeHoyorAAAAAK56K5i1iT-M4VVEhAuomb4eQ0qV";
         String url = "https://www.google.com/recaptcha/api/siteverify";
 
 
@@ -237,7 +237,7 @@ public class UserService {
         passwordResetToken.setExpiryDate(LocalDateTime.now().plusMinutes(15)); // Token hết hạn sau 15 phút
 
         tokenRepository.save(passwordResetToken);
-        String resetLink = "http://localhost:3001/reset-password?token=" + token;
+        String resetLink = "https://fe-unistore.onrender.com/reset-password?token=" + token;
         emailService.sendResetPasswordEmail(email, resetLink);
         // Gửi email ở đây
         // Ví dụ: gửi email chứa link http://your-domain/reset-password?token=xxx

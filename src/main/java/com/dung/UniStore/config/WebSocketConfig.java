@@ -21,7 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Đăng ký endpoint WebSocket và cấu hình CORS
         registry.addEndpoint("/ws-chat")
-                .setAllowedOrigins("http://localhost:3001") // Chỉ định nguồn được phép
+                .setAllowedOrigins("http://localhost:3001","https://fe-unistore.onrender.com") // Chỉ định nguồn được phép
                 .withSockJS(); // Cấu hình SockJS fallback
     }
 }
