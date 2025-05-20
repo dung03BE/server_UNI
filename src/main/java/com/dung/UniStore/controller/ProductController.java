@@ -112,6 +112,7 @@ public class ProductController {
         }
 
     }
+    //k sai nua
     private String storeFile(MultipartFile file ) throws IOException {
         if(!isImageFile(file)||file.getOriginalFilename()==null)
         {
