@@ -52,7 +52,7 @@ public class InventoryyService {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
     public List<InventoryResponse> getAllInventories() {
         List<Inventory> inventories = inventoryRepository.findAll();
         return inventories.stream().map(this::toInventoryResponse).toList();

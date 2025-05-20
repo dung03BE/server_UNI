@@ -7,6 +7,7 @@ import com.dung.UniStore.exception.ApiException;
 import com.dung.UniStore.service.InventoryyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public class InventoryyController {
 
     private final InventoryyService inventoryService;
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
     @PostMapping
     public ResponseEntity<InventoryResponse> createInventory(@RequestBody InventoryCreationRequest request) throws ApiException {
         Inventory inventory = inventoryService.createInventory(request);
@@ -40,6 +41,7 @@ public class InventoryyController {
     public ResponseEntity<List<InventoryResponse>> getInventoriesByProductId(@PathVariable Integer productId) {
         return ResponseEntity.ok(inventoryService.getInventoriesByProductId(productId));
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
     @PutMapping("{id}")
     public ResponseEntity<InventoryResponse> updateInventory(@PathVariable int id, @RequestBody InventoryCreationRequest request) throws ApiException {
         Inventory inventory = inventoryService.updateInventory(id,request);
