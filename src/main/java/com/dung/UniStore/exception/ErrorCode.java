@@ -15,7 +15,7 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-    INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
+    INVALID_DOB(1008, "Tuổi của bạn phải lớn hơn {min}", HttpStatus.BAD_REQUEST),
     PRODUCT_NOT_EXISTED(1009, "PRODUCT not existed", HttpStatus.NOT_FOUND),
     CATEGORY_NOT_EXISTED(1010, "CATEGORY not existed", HttpStatus.NOT_FOUND),
     INVENTORY_ITEM_NOT_EXISTS(1011, "INVENTORY_ITEM not existed", HttpStatus.NOT_FOUND),

@@ -15,10 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductCreationRequest {
         @NotBlank(message = "ProDuctName is required!")
-        @Size(min=3, max=200,message = "ProductName must be between 3 and 200 characters")
+        @Size(min=3, max=200,message = "Tên sản phẩm phải từ 3 đến 200 kí tự")
         private String name;
-        @Min(value =0 , message = "Price must be greater than or equal 0")
-        @Max(value = 1000000000, message = "Price must be less than or equal 1000000000")
+        @Min(value =0 , message = "Giá phải lớn hơn 0")
+        @Max(value = 1000000000, message = "Giá phải nhỏ hơn 1.000.000.000")
         private float price;
         private String description;
         private int categoryId;

@@ -199,10 +199,14 @@ public class UserService {
         User user = userRepository.findById(Math.toIntExact(id)).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED)
         );
+        Role roleid = roleRepository.findById(request.getRoleId()).orElseThrow(
+                () -> new AppException(ErrorCode.UNAUTHORIZED)
+        );
         user.setFullName(request.getFullName());
         //user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
         user.setAddress(request.getAddress());
+        user.setRole(roleid);
         if (!user.getPhoneNumber().equals(request.getPhoneNumber())) {
             if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
                 throw new ApiException("Số điện thoại đã tồn tại trong hệ thống!");
