@@ -5,6 +5,7 @@ import com.dung.UniStore.dto.request.ProductUpdateRequest;
 import com.dung.UniStore.dto.response.*;
 import com.dung.UniStore.entity.Product;
 import com.dung.UniStore.entity.ProductImage;
+import com.dung.UniStore.exception.ApiException;
 import com.dung.UniStore.form.ProductFilterForm;
 import com.dung.UniStore.mapper.ProductMapper;
 import com.dung.UniStore.service.IProductService;
@@ -171,8 +172,7 @@ public class ProductController {
                 .build();
     }
     @PutMapping("{id}")
-    public ApiResponse<ProductResponse> updateProduct(@PathVariable int id, @Valid @RequestBody ProductUpdateRequest request)
-    {
+    public ApiResponse<ProductResponse> updateProduct(@PathVariable int id, @Valid @RequestBody ProductUpdateRequest request) throws ApiException {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.updateProduct(id, request))
                 .build();

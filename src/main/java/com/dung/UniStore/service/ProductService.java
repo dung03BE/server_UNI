@@ -90,74 +90,74 @@ public class ProductService implements IProductService {
 
         return productResponse;
     }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @Override
-    @Transactional
-    @CachePut(value = "products", key = "#id")
-    public ProductResponse updateProduct(int id, ProductUpdateRequest request) {
-        // Kiểm tra sản phẩm tồn tại
-        Product existingProduct = productRepository.findById(id).orElseThrow(
-                () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
-        );
-
-        // Kiểm tra danh mục tồn tại
-        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(
-                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED)
-        );
-
-        try {
-            // 1. Xóa tất cả các màu hiện có của sản phẩm trước
-            if (request.getColors() != null) {
-                productColorRepo.deleteByProduct_Id(id);
-            }
-
-            // 2. Cập nhật thông tin cơ bản của sản phẩm
-            productMapper.updateProduct(existingProduct, request);
-            existingProduct.setCategory(category);
-
-            // 3. Lưu sản phẩm để cập nhật thông tin cơ bản
-            productRepository.save(existingProduct);
-
-            // 4. Thêm các màu mới sau khi đã lưu sản phẩm
-            if (request.getColors() != null && !request.getColors().isEmpty()) {
-                for (String color : request.getColors()) {
-                    // Tạo và lưu từng màu riêng biệt
-                    ProductColor productColor = new ProductColor();
-                    productColor.setColor(color);
-                    productColor.setProduct(existingProduct);
-                    productColorRepo.save(productColor);
-                }
-            }
-
-            // 5. Cập nhật chi tiết sản phẩm
-            if (request.getDetails() != null) {
-                // Tìm chi tiết sản phẩm hiện có hoặc tạo mới nếu chưa có
-                ProductDetails existingDetails = productDetailsRepository.findByProductId(id);
-                if (existingDetails != null) {
-                    // Cập nhật thông tin chi tiết hiện có
-                    productMapper.updateProductDetails(existingDetails, request.getDetails());
-                    productDetailsRepository.save(existingDetails);
-                } else {
-                    // Tạo mới chi tiết sản phẩm nếu chưa có
-                    ProductDetails details = productMapper.toProductDetails(request.getDetails());
-                    details.setProduct(existingProduct);
-                    productDetailsRepository.save(details);
-                }
-            }
-
-            // 6. Tải lại thông tin sản phẩm đã cập nhật
-            Product refreshedProduct = productRepository.findById(id).orElseThrow(
-                    () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
-            );
-
-            return productMapper.toProductResponse(refreshedProduct);
-        } catch (Exception e) {
-            // Log lỗi và ném lại ngoại lệ
-            System.err.println("Error updating product: " + e.getMessage());
-            throw e;
-        }
-    }
+//
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+//    @Override
+//    @Transactional
+//    @CachePut(value = "products", key = "#id")
+//    public ProductResponse updateProduct(int id, ProductUpdateRequest request) {
+//        // Kiểm tra sản phẩm tồn tại
+//        Product existingProduct = productRepository.findById(id).orElseThrow(
+//                () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
+//        );
+//
+//        // Kiểm tra danh mục tồn tại
+//        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(
+//                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED)
+//        );
+//
+//        try {
+//            // 1. Xóa tất cả các màu hiện có của sản phẩm trước
+//            if (request.getColors() != null) {
+//                productColorRepo.deleteByProduct_Id(id);
+//            }
+//
+//            // 2. Cập nhật thông tin cơ bản của sản phẩm
+//            productMapper.updateProduct(existingProduct, request);
+//            existingProduct.setCategory(category);
+//
+//            // 3. Lưu sản phẩm để cập nhật thông tin cơ bản
+//            productRepository.save(existingProduct);
+//
+//            // 4. Thêm các màu mới sau khi đã lưu sản phẩm
+//            if (request.getColors() != null && !request.getColors().isEmpty()) {
+//                for (String color : request.getColors()) {
+//                    // Tạo và lưu từng màu riêng biệt
+//                    ProductColor productColor = new ProductColor();
+//                    productColor.setColor(color);
+//                    productColor.setProduct(existingProduct);
+//                    productColorRepo.save(productColor);
+//                }
+//            }
+//
+//            // 5. Cập nhật chi tiết sản phẩm
+//            if (request.getDetails() != null) {
+//                // Tìm chi tiết sản phẩm hiện có hoặc tạo mới nếu chưa có
+//                ProductDetails existingDetails = productDetailsRepository.findByProductId(id);
+//                if (existingDetails != null) {
+//                    // Cập nhật thông tin chi tiết hiện có
+//                    productMapper.updateProductDetails(existingDetails, request.getDetails());
+//                    productDetailsRepository.save(existingDetails);
+//                } else {
+//                    // Tạo mới chi tiết sản phẩm nếu chưa có
+//                    ProductDetails details = productMapper.toProductDetails(request.getDetails());
+//                    details.setProduct(existingProduct);
+//                    productDetailsRepository.save(details);
+//                }
+//            }
+//
+//            // 6. Tải lại thông tin sản phẩm đã cập nhật
+//            Product refreshedProduct = productRepository.findById(id).orElseThrow(
+//                    () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
+//            );
+//
+//            return productMapper.toProductResponse(refreshedProduct);
+//        } catch (Exception e) {
+//            // Log lỗi và ném lại ngoại lệ
+//            System.err.println("Error updating product: " + e.getMessage());
+//            throw e;
+//        }
+//    }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
     @Override
@@ -332,5 +332,103 @@ public class ProductService implements IProductService {
 
         return productResponses;
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Override
+    @Transactional
+    @CachePut(value = "products", key = "#id")
+    public ProductResponse updateProduct(int id, ProductUpdateRequest request) throws ApiException {
+        // Kiểm tra sản phẩm tồn tại
+        Product existingProduct = productRepository.findById(id).orElseThrow(
+                () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
+        );
 
+        // Kiểm tra danh mục tồn tại
+        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(
+                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED)
+        );
+
+        try {
+            // 1. Cập nhật thông tin cơ bản của sản phẩm
+            productMapper.updateProduct(existingProduct, request);
+            existingProduct.setCategory(category);
+
+            // 2. Cập nhật màu sắc
+            updateProductColors(existingProduct, request.getColors());
+
+            // 3. Cập nhật hình ảnh
+            if (request.getImages() != null && !request.getImages().isEmpty()) {
+                updateProductImages(existingProduct, request.getImages());
+            }
+
+            // 4. Lưu sản phẩm sau khi đã cập nhật thông tin cơ bản, màu sắc và hình ảnh
+            productRepository.save(existingProduct);
+
+            // 5. Cập nhật chi tiết sản phẩm
+            if (request.getDetails() != null) {
+                // Tìm chi tiết sản phẩm hiện có hoặc tạo mới nếu chưa có
+                ProductDetails existingDetails = productDetailsRepository.findByProductId(id);
+                if (existingDetails != null) {
+                    // Cập nhật thông tin chi tiết hiện có
+                    productMapper.updateProductDetails(existingDetails, request.getDetails());
+                    productDetailsRepository.save(existingDetails);
+                } else {
+                    // Tạo mới chi tiết sản phẩm nếu chưa có
+                    ProductDetails details = productMapper.toProductDetails(request.getDetails());
+                    details.setProduct(existingProduct);
+                    productDetailsRepository.save(details);
+                }
+            }
+
+            // 6. Tải lại thông tin sản phẩm đã cập nhật để trả về response chuẩn xác
+            Product refreshedProduct = productRepository.findById(id).orElseThrow(
+                    () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
+            );
+
+            return productMapper.toProductResponse(refreshedProduct);
+        } catch (Exception e) {
+            // Log lỗi và ném lại ngoại lệ
+            System.out.println("LLLLLL"+e.getMessage());
+            throw new ApiException("Qua anh");
+        }
+    }
+
+    /**
+     * Cập nhật màu sắc cho sản phẩm
+     * @param product Sản phẩm cần cập nhật
+     * @param colors Danh sách màu mới
+     */
+    private void updateProductColors(Product product, List<String> colors) {
+        if (colors == null) {
+            return;
+        }
+
+        // Nếu danh sách hiện tại là null, khởi tạo mới
+        if (product.getColors() == null) {
+            product.setColors(new ArrayList<>());
+        } else {
+            product.getColors().clear(); // orphanRemoval sẽ tự động xóa khỏi DB
+        }
+
+        // Thêm lại các màu mới
+        for (String color : colors) {
+            ProductColor productColor = new ProductColor();
+            productColor.setColor(color);
+            productColor.setProduct(product); // rất quan trọng: set product
+            product.getColors().add(productColor); // add trực tiếp vào list
+        }
+    }
+
+    private void updateProductImages(Product product, List<?> newImages) {
+        // Xóa sạch ảnh cũ
+        product.getImages().clear();
+
+        // Thêm ảnh mới
+        for (var img : newImages) {
+            // Giả sử newImages là List<String> url
+            ProductImage pi = new ProductImage();
+            pi.setImageUrl((String) img);
+            pi.setProduct(product);
+            product.getImages().add(pi);
+        }
+    }
 }

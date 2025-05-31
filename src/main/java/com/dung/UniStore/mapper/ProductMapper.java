@@ -55,5 +55,17 @@ public interface ProductMapper {
                 })
                 .toList();
     }
+    default List<ProductImage> mapToProductImages(List<String> imageUrls) {
+        if (imageUrls == null) {
+            return null;
+        }
+        return imageUrls.stream()
+                .map(url -> {
+                    ProductImage image = new ProductImage();
+                    image.setImageUrl(url);
+                    return image;
+                })
+                .toList();
+    }
 
 }

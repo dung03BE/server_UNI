@@ -13,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "permission")
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

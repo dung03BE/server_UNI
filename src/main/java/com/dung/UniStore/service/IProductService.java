@@ -6,6 +6,7 @@ import com.dung.UniStore.dto.response.ProductImageResponse;
 import com.dung.UniStore.dto.response.ProductResponse;
 import com.dung.UniStore.entity.Product;
 import com.dung.UniStore.entity.ProductImage;
+import com.dung.UniStore.exception.ApiException;
 import com.dung.UniStore.form.ProductFilterForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ public interface IProductService {
 
     ProductResponse getProductById(int id);
 
-    ProductResponse updateProduct(int id, ProductUpdateRequest request);
+    ProductResponse updateProduct(int id, ProductUpdateRequest request) throws ApiException;
 
     void deleteProduct(int id);
 

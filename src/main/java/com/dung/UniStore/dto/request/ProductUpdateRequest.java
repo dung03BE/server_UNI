@@ -27,7 +27,7 @@ public class ProductUpdateRequest {
     private String brand;
     private String model;
     private Byte available;
-    //        private List<String> imageUrls;
+    private List<String> images;
     private List<String> colors;
     private ProductDetailsRequest details;
 }
