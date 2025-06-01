@@ -385,4 +385,12 @@ public class OrderService implements IOrderService {
         // 3. Xóa cart luôn
         cartRepository.delete(cart);
     }
+    @Override
+    public OrderResponse updateStatusOrderByUser(int id, OrderCreationRequest request,Long userId) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTS));
+        order.setStatus(request.getStatus());
+        orderRepository.save(order);
+        return orderMapper.toOrderResponse(order);
+    }
 }

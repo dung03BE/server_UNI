@@ -110,4 +110,13 @@ public class OrderController {
                 .result(orderService.updateStatusOrder(id,request))
                 .build();
     }
+    @PutMapping("/checkout/status/{id}")
+    public ApiResponse<OrderResponse> updateStatusOrderByUser(@PathVariable int id,
+                                                              @RequestBody OrderCreationRequest
+                                                                      request) {
+        Long userId = authUtil.loggedInUserId();
+        return ApiResponse.<OrderResponse>builder()
+                .result(orderService.updateStatusOrderByUser(id,request,userId))
+                .build();
+    }
 }

@@ -21,4 +21,6 @@ public interface IOrderService {
     String checkoutVnpay(OrderCreationRequest request,Long userId, HttpServletRequest httpRequest) throws Exception;
 
     OrderResponse checkout(OrderCreationRequest request) throws Exception;
+
+    OrderResponse updateStatusOrderByUser(int id, OrderCreationRequest request, Long userId);
 }
